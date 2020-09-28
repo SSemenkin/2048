@@ -36,6 +36,8 @@ private Q_SLOTS:
     void updateScore(int value);
     void restartGame();
     bool isGameOver();
+    void checkForGameOver();
+    void updateBestScoreIsNeeded (int value);
 
 private:
     Ui::MainWindow *ui;

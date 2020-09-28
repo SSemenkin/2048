@@ -33,21 +33,25 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
     case Qt::Key_A:
     case Qt::Key_Left :
         moveLeft ();
+        checkForGameOver ();
         break;
 
     case Qt::Key_D:
     case Qt::Key_Right :
         moveRight ();
+        checkForGameOver ();
         break;
 
     case Qt::Key_W:
     case Qt::Key_Up:
         moveUp ();
+        checkForGameOver ();
         break;
 
     case Qt::Key_S:
     case Qt::Key_Down:
         moveDown ();
+        checkForGameOver ();
         break;
     }
 }
@@ -239,7 +243,8 @@ void MainWindow::updateScore(int value)
 
 void MainWindow::restartGame()
 {
-    // to do bestScore update if needed
+
+    updateBestScoreIsNeeded (bestScore->value ());
     currentScore->setValue ( 0);
 
     for (int row = 0; row < size; row ++) {
@@ -259,7 +264,49 @@ void MainWindow::restartGame()
 
 bool MainWindow::isGameOver()
 {
+    //есть ли пустые клетки?
+    for(int i = 0; i < size; i++) {
+        for (int j = 0; j <size; j++) {
+            if(m_container[i][j].text ().isEmpty ()) return false;
+        }
+    }
+    // по строкам прошлись
+    for(int i = 0; i < size; i++) {
+        for (int j = 0; j < size - 1; j++) {
+            if(m_container[i][j].text () == m_container[i][j+1].text () && !m_container[i][j].text ().isEmpty ()) {
+                return false;
+            }
+        }
+    }
+    // теперь по столбцам
+    for (int col = 0; col < size; col ++) {
+        for (int row = 0; row < size-1; row++) {
+            if(m_container[row][col].text () == m_container[row+1][col].text () && !m_container[row][col].text ().isEmpty ()) {
+                return false;
+            }
+        }
+    }
 
+    return true;
+}
+
+void MainWindow::checkForGameOver()
+{
+    if(isGameOver ()) {
+        updateBestScoreIsNeeded (bestScore->value ());
+        if(QMessageBox::question (this, "", "Игра окончена! Вы проиграли!\nНачать новую игру?") == QMessageBox::StandardButton::Yes) {
+            restartGame ();
+        }
+    }
+}
+
+void MainWindow::updateBestScoreIsNeeded(int value)
+{
+    if(settings->contains ("bestScore")) {
+        if(settings->value ("bestScore").toInt () < value) {
+            settings->setValue ("bestScore", value);
+        }
+    } else settings->setValue ("bestScore", value);
 }
 
 void MainWindow::initiateGame()

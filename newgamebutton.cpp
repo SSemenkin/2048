@@ -8,16 +8,15 @@ NewGameButton::NewGameButton(QWidget *parent) : QWidget(parent)
 void NewGameButton::paintEvent(QPaintEvent *)
 {
     QPainter painter(this);
-    painter.setRenderHint (QPainter::HighQualityAntialiasing);
-    painter.setBrush (QColor(198, 127, 47));
-    painter.drawRoundedRect ( QRect( 0, this->height ()/2 - this->height ()/4, this->width (),this->height ()/2), this->width ()/20, this->height ()/20);
+    painter.setRenderHint (QPainter::Antialiasing);
+    painter.setBrush (QColor("#EEE4DA"));
+    painter.drawRoundedRect ( QRect( 0, this->height ()/2 - this->height ()/4, this->width ()-1,this->height ()/2), this->width ()/20, this->height ()/20);
     painter.setFont (QFont("Comic Sans Pro", 14));
 
-    if (isHover) {
-        painter.setBrush (QColor( 198, 169, 47));
-        painter.setPen (Qt::blue);
-        painter.drawRoundedRect ( QRect( 0, this->height ()/2 - this->height ()/4, this->width (),this->height ()/2), this->width ()/20, this->height ()/20);
-    }
+    painter.drawRoundedRect ( QRect( 0, this->height ()/2 - this->height ()/4, this->width (),this->height ()/2), this->width ()/20, this->height ()/20);
+
+    isHover ? painter.setPen (QColor("#F9F6F2")) : painter.setPen (QColor("#776E62"));
+
     painter.drawText (QRect( 0, this->height ()/2 - this->height ()/4, this->width (),this->height ()/2), Qt::AlignCenter, "Новая игра");
 }
 
