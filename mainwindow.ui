@@ -31,11 +31,11 @@
    </property>
    <widget class="QMenu" name="menuGame">
     <property name="title">
-     <string>Игра</string>
+     <string>Game</string>
     </property>
     <widget class="QMenu" name="menu">
      <property name="title">
-      <string>Изменить размерность</string>
+      <string>Change field size</string>
      </property>
      <addaction name="action4x4"/>
      <addaction name="action5x5"/>
@@ -52,7 +52,7 @@
   <widget class="QStatusBar" name="statusbar"/>
   <action name="action_3">
    <property name="text">
-    <string>Выход</string>
+    <string>Quit</string>
    </property>
    <property name="menuRole">
     <enum>QAction::QuitRole</enum>

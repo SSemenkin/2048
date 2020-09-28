@@ -2,14 +2,15 @@
 
 Cell2048::Cell2048(QWidget *parent) : QWidget(parent), m_text ("")
 {
-
+    auto m_font = this->font ();
+    m_font.setPointSize (m_font.pointSize () * 2);
+    this->setFont (m_font);
 }
 
 void Cell2048::paintEvent(QPaintEvent */*event*/)
 {
     QPainter painter(this);
     painter.setRenderHint (QPainter::Antialiasing, true);
-    painter.setFont (QFont("Comic Sans ms", 32));
     painter.setBrush (backgroundFromValue (m_text.toInt ()));
     painter.drawRoundedRect (QRect(0,0,this->width (), this->height ()), this->width ()/20, this->height ()/20);
     painter.setPen (foregroundColor);

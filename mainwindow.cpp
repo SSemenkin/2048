@@ -298,7 +298,7 @@ void MainWindow::checkForGameOver()
 {
     if(isGameOver ()) {
         updateBestScoreIsNeeded (bestScore->value ());
-        if(QMessageBox::question (this, "", "Игра окончена! Вы проиграли!\nНачать новую игру?") == QMessageBox::StandardButton::Yes) {
+        if(QMessageBox::question (this, "", "Game Over!You lose!\nDo you want to start new game?") == QMessageBox::StandardButton::Yes) {
             restartGame ();
         }
     }
