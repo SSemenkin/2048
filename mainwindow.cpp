@@ -3,8 +3,8 @@
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
-    , ui(new Ui::MainWindow), bestScore(new ScoreLogo("Лучший результат :\n %1", this)),
-    currentScore (new ScoreLogo("Текущий результат :\n %1", this)), button( new NewGameButton(this)),
+    , ui(new Ui::MainWindow), bestScore(new ScoreLogo("Best Score :\n %1", this)),
+    currentScore (new ScoreLogo("Score :\n %1", this)), button( new NewGameButton(this)),
     settings (new QSettings( qApp->organizationName (), qApp->applicationName (), this))
 {
     ui->setupUi(this);
@@ -14,7 +14,11 @@ MainWindow::MainWindow(QWidget *parent)
     ui->gridLayout->addWidget (bestScore, 0, 2);
     ui->gridLayout->addWidget (button, 0, 3);
     initiateGame ();
-    QObject::connect (button, &NewGameButton::initiateNewGame, this, &MainWindow::restartGame);
+    QObject::connect (button, &NewGameButton::initiateNewGame, [=](){
+        this->restartGame ();
+    });
+    QObject::connect (ui->action_3, &QAction::triggered, qApp, &QCoreApplication::quit);
+
 }
 
 MainWindow::~MainWindow()
@@ -241,7 +245,7 @@ void MainWindow::updateScore(int value)
     if(bestScore->value () < newValue) bestScore->setValue (newValue);
 }
 
-void MainWindow::restartGame()
+void MainWindow::restartGame( int size)
 {
 
     updateBestScoreIsNeeded (bestScore->value ());
@@ -340,4 +344,64 @@ void MainWindow::generateRandom()
 
     int index = rand() % emptyCells.size ();
     emptyCells[index]->setText (index % 2 ? "2" : "4");
+}
+
+void MainWindow::on_action4x4_triggered()
+{
+    int oldSize = size;
+    size = 4;
+    restartGame (oldSize);
+    ui->action4x4->setChecked (true);
+    ui->action5x5->setChecked (false);
+    ui->action6x6->setChecked (false);
+    ui->action7x7->setChecked (false);
+    ui->action8x8->setChecked (false);
+}
+
+void MainWindow::on_action5x5_triggered()
+{
+    int oldSize = size;
+    size = 5;
+    restartGame (oldSize);
+    ui->action4x4->setChecked (false);
+    ui->action5x5->setChecked (true);
+    ui->action6x6->setChecked (false);
+    ui->action7x7->setChecked (false);
+    ui->action8x8->setChecked (false);
+}
+
+void MainWindow::on_action6x6_triggered()
+{
+    int oldSize = size;
+    size = 6;
+    restartGame (oldSize);
+    ui->action4x4->setChecked (false);
+    ui->action5x5->setChecked (false);
+    ui->action6x6->setChecked (true);
+    ui->action7x7->setChecked (false);
+    ui->action8x8->setChecked (false);
+}
+
+void MainWindow::on_action7x7_triggered()
+{
+    int oldSize = size;
+    size = 7;
+    restartGame (oldSize);
+    ui->action4x4->setChecked (false);
+    ui->action5x5->setChecked (false);
+    ui->action6x6->setChecked (false);
+    ui->action7x7->setChecked (true);
+    ui->action8x8->setChecked (false);
+}
+
+void MainWindow::on_action8x8_triggered()
+{
+    int oldSize = size;
+    size = 8;
+    restartGame (oldSize);
+    ui->action4x4->setChecked (false);
+    ui->action5x5->setChecked (false);
+    ui->action6x6->setChecked (false);
+    ui->action7x7->setChecked (false);
+    ui->action8x8->setChecked (true);
 }

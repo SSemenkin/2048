@@ -11,13 +11,13 @@ void NewGameButton::paintEvent(QPaintEvent *)
     painter.setRenderHint (QPainter::Antialiasing);
     painter.setBrush (QColor("#EEE4DA"));
     painter.drawRoundedRect ( QRect( 0, this->height ()/2 - this->height ()/4, this->width ()-1,this->height ()/2), this->width ()/20, this->height ()/20);
-    painter.setFont (QFont("Comic Sans Pro", 14));
+    painter.setFont (QFont("Elephant", 14));
 
     painter.drawRoundedRect ( QRect( 0, this->height ()/2 - this->height ()/4, this->width (),this->height ()/2), this->width ()/20, this->height ()/20);
 
     isHover ? painter.setPen (QColor("#F9F6F2")) : painter.setPen (QColor("#776E62"));
 
-    painter.drawText (QRect( 0, this->height ()/2 - this->height ()/4, this->width (),this->height ()/2), Qt::AlignCenter, "Новая игра");
+    painter.drawText (QRect( 0, this->height ()/2 - this->height ()/4, this->width (),this->height ()/2), Qt::AlignCenter, "New Game");
 }
 
 void NewGameButton::mousePressEvent(QMouseEvent *event)

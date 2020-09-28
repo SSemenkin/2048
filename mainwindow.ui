@@ -29,8 +29,78 @@
      <height>21</height>
     </rect>
    </property>
+   <widget class="QMenu" name="menuGame">
+    <property name="title">
+     <string>Игра</string>
+    </property>
+    <widget class="QMenu" name="menu">
+     <property name="title">
+      <string>Изменить размерность</string>
+     </property>
+     <addaction name="action4x4"/>
+     <addaction name="action5x5"/>
+     <addaction name="action6x6"/>
+     <addaction name="action7x7"/>
+     <addaction name="action8x8"/>
+    </widget>
+    <addaction name="menu"/>
+    <addaction name="separator"/>
+    <addaction name="action_3"/>
+   </widget>
+   <addaction name="menuGame"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
+  <action name="action_3">
+   <property name="text">
+    <string>Выход</string>
+   </property>
+   <property name="menuRole">
+    <enum>QAction::QuitRole</enum>
+   </property>
+  </action>
+  <action name="action5x5">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>5x5</string>
+   </property>
+  </action>
+  <action name="action6x6">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>6x6</string>
+   </property>
+  </action>
+  <action name="action7x7">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>7x7</string>
+   </property>
+  </action>
+  <action name="action8x8">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>8x8</string>
+   </property>
+  </action>
+  <action name="action4x4">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>4x4</string>
+   </property>
+  </action>
  </widget>
  <resources/>
  <connections/>
