@@ -22,7 +22,7 @@ void NewGameButton::paintEvent(QPaintEvent *)
 void NewGameButton::mousePressEvent(QMouseEvent *event)
 {
     if(event->button () == Qt::MouseButton::LeftButton) {
-        if(QMessageBox :: question ( this, "", "Вы уверенны что хотите начать новую игру?") == QMessageBox::StandardButton::Yes) {
+        if(QMessageBox :: question ( this, "", "Start new game?") == QMessageBox::StandardButton::Yes) {
             emit initiateNewGame ();
         }
     }
