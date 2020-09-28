@@ -4,11 +4,17 @@
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow), bestScore(new ScoreLogo("Лучший результат :\n %1", this)),
-    currentScore (new ScoreLogo("Текущий результат :\n %1", this)), button( new NewGameButton(this))
+    currentScore (new ScoreLogo("Текущий результат :\n %1", this)), button( new NewGameButton(this)),
+    settings (new QSettings( qApp->organizationName (), qApp->applicationName (), this))
 {
     ui->setupUi(this);
+    this->setWindowTitle (qApp->applicationName ());
     srand(time(NULL));
+    ui->gridLayout->addWidget (currentScore, 0, 1);
+    ui->gridLayout->addWidget (bestScore, 0, 2);
+    ui->gridLayout->addWidget (button, 0, 3);
     initiateGame ();
+    QObject::connect (button, &NewGameButton::initiateNewGame, this, &MainWindow::restartGame);
 }
 
 MainWindow::~MainWindow()
@@ -111,7 +117,7 @@ void MainWindow::moveRight()
         for (int column = size - 1; column > 0 ;column --) {
             if(m_container[row][column].text () == m_container[row][column - 1].text () && !m_container[row][column].text ().isEmpty ()) {
                 m_container[row][column].setText (QString::number (m_container[row][column].text ().toInt () * 2));
-                 updateScore (m_container[row][column].text ().toInt ());
+                updateScore (m_container[row][column].text ().toInt ());
                 m_container[row][column - 1].setText ("");
                 isRandomValueNeededToGenerate = true;
             }
@@ -199,7 +205,7 @@ void MainWindow::moveDown()
         for( int row = size - 1; row > 0 ; row --) {
             if(m_container[row] [column].text () == m_container[row - 1][column].text () && !m_container[row][column].text ().isEmpty ()) {
                 m_container[row] [column].setText (QString::number (m_container[row][column].text ().toInt () * 2));
-                 updateScore (m_container[row][column].text ().toInt ());
+                updateScore (m_container[row][column].text ().toInt ());
                 m_container[row - 1][column].setText ("");
 
                 row = size - 1;
@@ -231,6 +237,31 @@ void MainWindow::updateScore(int value)
     if(bestScore->value () < newValue) bestScore->setValue (newValue);
 }
 
+void MainWindow::restartGame()
+{
+    // to do bestScore update if needed
+    currentScore->setValue ( 0);
+
+    for (int row = 0; row < size; row ++) {
+        for (int col = 0; col < size; col ++) {
+            ui->gridLayout->removeWidget (&m_container[row][col]);
+        }
+    }
+
+    for (int i = 0; i < size; i++) {
+        delete[] m_container[i];
+    }
+    delete [] m_container;
+
+    initiateGame ();
+
+}
+
+bool MainWindow::isGameOver()
+{
+
+}
+
 void MainWindow::initiateGame()
 {
     ui->gridLayout->setSpacing (10);
@@ -240,18 +271,15 @@ void MainWindow::initiateGame()
         m_container[i] = new Cell2048[size];
     }
 
-    ui->gridLayout->addWidget (currentScore, 0, 1);
-    ui->gridLayout->addWidget (bestScore, 0, 2);
-    ui->gridLayout->addWidget (button, 0, 3);
-
     for (int i = 0; i < size; i ++) {
         for( int j = 0; j < size; j++) {
-            m_container[i][j].setToolTip (QString::number (i*size+j));
             ui->gridLayout->addWidget (&m_container[i][j], i+1 , j);
         }
     }
     for (int i = 0; i < size/2; i ++)
         generateRandom ();
+
+    if(settings->contains ("bestScore"))  bestScore->setValue (settings->value ("bestScore").toInt ());
 }
 
 void MainWindow::generateRandom()

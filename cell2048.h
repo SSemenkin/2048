@@ -18,7 +18,8 @@ protected:
 signals:
 
 private:
-    QColor colorFromValue(const int &value) const;
+    QColor backgroundFromValue(const int &value) ;
+    QColor foregroundColor;
 
     QString m_text;
 };

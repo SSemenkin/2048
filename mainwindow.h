@@ -4,6 +4,7 @@
 #include <QKeyEvent>
 #include <QMainWindow>
 #include <QMessageBox>
+#include <QSettings>
 
 #include <QDebug>
 #include "cell2048.h"
@@ -33,6 +34,8 @@ private Q_SLOTS:
     void moveUp();
     void moveDown();
     void updateScore(int value);
+    void restartGame();
+    bool isGameOver();
 
 private:
     Ui::MainWindow *ui;
@@ -45,7 +48,7 @@ private:
 
     ScoreLogo *bestScore, *currentScore;
     NewGameButton *button;
-
+    QSettings *settings;
 
 };
 #endif // MAINWINDOW_H
