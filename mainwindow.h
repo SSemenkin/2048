@@ -6,6 +6,7 @@
 #include <QMessageBox>
 #include <QSettings>
 #include <QPropertyAnimation>
+#include <QTimer>
 
 #include "cell2048.h"
 #include "scorelogo.h"
@@ -56,13 +57,18 @@ private:
     Ui::MainWindow *ui;
 
     int size = 4;
-    const int animationDuration = 200;
+    const int animationDuration = 25;
 
     Cell2048** m_container;
 
     ScoreLogo *bestScore, *currentScore;
     NewGameButton *button;
     QSettings *settings;
+
+    int count = 0; // not sure about this
+
+    QTimer keyEventTimer;
+    bool animationEnabled;
 
 };
 #endif // MAINWINDOW_H

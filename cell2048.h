@@ -3,7 +3,8 @@
 
 #include <QWidget>
 #include <QPainter>
-#include <QDebug>
+#include <QPixmap>
+#include <QMap>
 
 class Cell2048 : public QWidget
 {
@@ -18,6 +19,9 @@ public:
         paintDigits  = !paintDigits;
         update();
     };
+
+
+
 
 protected:
     void paintEvent(QPaintEvent *event) override ;

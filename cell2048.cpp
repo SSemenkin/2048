@@ -5,9 +5,7 @@ Cell2048::Cell2048(QWidget *parent) : QWidget(parent), m_text (""), paintDigits(
     auto m_font = this->font ();
     m_font.setPointSize (m_font.pointSize () * 2);
     this->setFont (m_font);
-
 }
-
 
 void Cell2048::paintEvent(QPaintEvent */*event*/)
 {
@@ -39,8 +37,9 @@ QColor Cell2048::backgroundFromValue(const int &value)
 
 QPixmap Cell2048::mapFromValue()
 {
-    QVector<QPixmap> faces = {QPixmap(),QPixmap(":/icons/prb.jpg"),QPixmap(":/icons/vlad.jpg"), QPixmap(":/icons/nikolya.jpg"),
-                              QPixmap(":/icons/rude.jpg"), QPixmap(":/icons/iron.jpg"), QPixmap(":/icons/jelezlo.jpg")};
+    QVector<QPixmap> faces = {QPixmap(),QPixmap(":/icons/prb2.jpg"),QPixmap(":/icons/vlad2.jpg"), QPixmap(":/icons/kolya.jpg"),
+                              QPixmap(":/icons/rude.jpg"), QPixmap(":/icons/iron.jpg"), QPixmap(":/icons/jelezlo.jpg"),
+                             QPixmap(":/icons/shtorm.jpg"), QPixmap(":/icons/mallboro.jpg"), QPixmap(":/icons/jekezniy_kurdos.jpg")};
 
     QMap <QString, QPixmap> container;
 
