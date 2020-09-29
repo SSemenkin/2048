@@ -386,8 +386,8 @@ void MainWindow::generateRandom()
                     if(m_container[i][j].isAnimatedAvaliable()) {
                         QPropertyAnimation *animation = new QPropertyAnimation(emptyCells[index], "geometry", emptyCells[index]);
                         animation->setDuration(animationDuration);
-                        animation->setStartValue(emptyCells[index]->geometry().adjusted(emptyCells[index]->x()-width()/2,
-                                                                                        emptyCells[index]->y()-height()/2,
+                        animation->setStartValue(emptyCells[index]->geometry().adjusted(emptyCells[index]->x() - 50,
+                                                                                        emptyCells[index]->y()- 50,
                                                                                         emptyCells[index]->width()/2,
                                                                                         emptyCells[index]->height()/2));
                         animation->setEndValue(emptyCells[index]->geometry());

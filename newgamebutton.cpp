@@ -2,9 +2,6 @@
 
 NewGameButton::NewGameButton(QWidget *parent) : QWidget(parent)
 {
-    this->setStyleSheet("NewGameButton::hovered{"
-                        "background: green;"
-                        "}");
 
 }
 

@@ -13,5 +13,7 @@
         <file>icons/kolya.jpg</file>
         <file>icons/prb2.jpg</file>
         <file>icons/vlad2.jpg</file>
+        <file>icons/archer.jpg</file>
+        <file>icons/andrew.jpg</file>
     </qresource>
 </RCC>

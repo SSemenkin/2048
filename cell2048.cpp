@@ -49,10 +49,10 @@ QColor Cell2048::backgroundFromValue(const int &value)
 
 QPixmap Cell2048::mapFromValue()
 {
-    QVector<QPixmap> faces = {QPixmap(),QPixmap(":/icons/prb2.jpg"),QPixmap(":/icons/vlad2.jpg"), QPixmap(":/icons/kolya.jpg"),
+    QVector<QPixmap> faces = {QPixmap(),QPixmap(":/icons/prb2.jpg"),QPixmap(":/icons/archer.jpg"), QPixmap(":/icons/kolya.jpg"),
                               QPixmap(":/icons/rude.jpg"), QPixmap(":/icons/iron.jpg"), QPixmap(":/icons/jelezlo.jpg"),
-                             QPixmap(":/icons/shtorm.jpg"), QPixmap(":/icons/mallboro.jpg"), QPixmap(":/icons/jekezniy_kurdos.jpg"),
-                             QPixmap(":/icons/vlad.jpg"), QPixmap(":/icons/prb.jpg")};
+                             QPixmap(":/icons/shtorm.jpg"), QPixmap(":/icons/mallboro.jpg"), QPixmap(":/icons/andrew.jpg"),
+                             QPixmap(":/icons/vlad2.jpg"), QPixmap(":/icons/jekezniy_kurdos.jpg")};
 
     QMap <QString, QPixmap> container;
 
