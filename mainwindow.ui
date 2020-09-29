@@ -26,7 +26,7 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>21</height>
+     <height>20</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuGame">
@@ -44,20 +44,13 @@
      <addaction name="action8x8"/>
     </widget>
     <addaction name="menu"/>
+    <addaction name="actionChange_cell_Type"/>
     <addaction name="separator"/>
-    <addaction name="action_3"/>
+    <addaction name="action_4"/>
    </widget>
    <addaction name="menuGame"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
-  <action name="action_3">
-   <property name="text">
-    <string>Quit</string>
-   </property>
-   <property name="menuRole">
-    <enum>QAction::QuitRole</enum>
-   </property>
-  </action>
   <action name="action5x5">
    <property name="checkable">
     <bool>true</bool>
@@ -99,6 +92,16 @@
    </property>
    <property name="text">
     <string>4x4</string>
+   </property>
+  </action>
+  <action name="actionChange_cell_Type">
+   <property name="text">
+    <string>Change cell Type</string>
+   </property>
+  </action>
+  <action name="action_4">
+   <property name="text">
+    <string>Quit</string>
    </property>
   </action>
  </widget>

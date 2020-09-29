@@ -10,6 +10,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
     this->setWindowTitle (qApp->applicationName ());
     srand(time(NULL));
+    ui->gridLayout->setSpacing(25);
     ui->gridLayout->addWidget (currentScore, 0, 1);
     ui->gridLayout->addWidget (bestScore, 0, 2);
     ui->gridLayout->addWidget (button, 0, 3);
@@ -17,8 +18,7 @@ MainWindow::MainWindow(QWidget *parent)
     QObject::connect (button, &NewGameButton::initiateNewGame, [=](){
         this->restartGame ();
     });
-    QObject::connect (ui->action_3, &QAction::triggered, qApp, &QCoreApplication::quit);
-
+    QObject::connect (ui->action_4, &QAction::triggered, qApp, &QCoreApplication::quit);
 }
 
 MainWindow::~MainWindow()
@@ -32,7 +32,6 @@ MainWindow::~MainWindow()
 
 void MainWindow::keyPressEvent(QKeyEvent *event)
 {
-    qDebug() << QString ("key Press Event ") << event;
     switch (event->key ()) {
     case Qt::Key_A:
     case Qt::Key_Left :
@@ -80,9 +79,11 @@ void MainWindow::moveLeft()
     for (int row = 0; row < size; row++) {
         for (int column = 0; column < size - 1 ;column ++) {
             if(m_container[row][column].text () == m_container[row][column + 1].text () && !m_container[row][column].text ().isEmpty ()) {
+                animateCell(row, column, Direction::LEFT);
                 m_container[row][column].setText (QString::number (m_container[row][column].text ().toInt () * 2));
                 updateScore (m_container[row][column].text ().toInt ());
                 m_container[row][column + 1].setText ("");
+                column++;
                 isRandomValueNeededToGenerate = true;
             }
         }
@@ -124,10 +125,12 @@ void MainWindow::moveRight()
     for (int row = 0; row < size; row++) {
         for (int column = size - 1; column > 0 ;column --) {
             if(m_container[row][column].text () == m_container[row][column - 1].text () && !m_container[row][column].text ().isEmpty ()) {
+                animateCell(row, column, RIGHT);
                 m_container[row][column].setText (QString::number (m_container[row][column].text ().toInt () * 2));
                 updateScore (m_container[row][column].text ().toInt ());
                 m_container[row][column - 1].setText ("");
                 isRandomValueNeededToGenerate = true;
+                column --;
             }
         }
     }
@@ -168,10 +171,11 @@ void MainWindow::moveUp()
     for (int column = 0; column < size; column ++) {
         for( int row = 0; row < size - 1; row ++) {
             if(m_container[row] [column].text () == m_container[row+1][column].text () && !m_container[row][column].text ().isEmpty ()) {
+                animateCell(row, column, UP);
                 m_container[row] [column].setText (QString::number (m_container[row][column].text ().toInt () * 2));
                 updateScore (m_container[row][column].text ().toInt ());
                 m_container[row+1][column].setText ("");
-                row = 0;
+                row ++;
                 isRandomValueNeededToGenerate = true;
             }
         }
@@ -212,18 +216,19 @@ void MainWindow::moveDown()
     for (int column = 0; column < size; column ++) {
         for( int row = size - 1; row > 0 ; row --) {
             if(m_container[row] [column].text () == m_container[row - 1][column].text () && !m_container[row][column].text ().isEmpty ()) {
+                animateCell(row, column, DOWN);
                 m_container[row] [column].setText (QString::number (m_container[row][column].text ().toInt () * 2));
                 updateScore (m_container[row][column].text ().toInt ());
                 m_container[row - 1][column].setText ("");
 
-                row = size - 1;
+                row --;
                 isRandomValueNeededToGenerate = true;
             }
         }
     }
 
     for (int column = 0; column < size; column ++) {
-        for( int row = size -1 ; row > 0; row --) {
+        for( int row = size - 1 ; row > 0; row --) {
             if(m_container[row] [column].text ().isEmpty () && !m_container[row - 1][column].text ().isEmpty ()) {
                 m_container[row] [column].setText (m_container[row - 1][column].text ());
                 m_container[row - 1][column].setText ("");
@@ -313,9 +318,34 @@ void MainWindow::updateBestScoreIsNeeded(int value)
     } else settings->setValue ("bestScore", value);
 }
 
+void MainWindow::animateCell(int row, int column, MainWindow::Direction direction)
+{
+    QPropertyAnimation *animation = new QPropertyAnimation(&m_container[row][column], "geometry");
+    animation->setDuration(animationDuration);
+    switch (direction) {
+    case Direction::LEFT:
+        animation->setStartValue(m_container[row][column].geometry().adjusted(25, 0, 0, 0));
+        break;
+    case Direction::RIGHT:
+        animation->setStartValue(m_container[row][column].geometry().adjusted(-25, 0, 0, 0));
+        break;
+    case Direction::UP:
+        animation->setStartValue(m_container[row][column].geometry().adjusted(0, 25, 0, 0));
+        break;
+    case Direction::DOWN:
+        animation->setStartValue(m_container[row][column].geometry().adjusted(0, -25, 0, 0));
+        break;
+    }
+    animation->setEndValue(m_container[row][column].geometry());
+    animation->setEasingCurve(QEasingCurve::BezierSpline);
+    animation->start();
+}
+
+
+
 void MainWindow::initiateGame()
 {
-    ui->gridLayout->setSpacing (10);
+
     m_container = new Cell2048* [size];
 
     for (int i = 0; i < size; i++) {
@@ -343,7 +373,9 @@ void MainWindow::generateRandom()
     }
 
     int index = rand() % emptyCells.size ();
+
     emptyCells[index]->setText (index % 2 ? "2" : "4");
+
 }
 
 void MainWindow::on_action4x4_triggered()
@@ -404,4 +436,13 @@ void MainWindow::on_action8x8_triggered()
     ui->action6x6->setChecked (false);
     ui->action7x7->setChecked (false);
     ui->action8x8->setChecked (true);
+}
+
+void MainWindow::on_actionChange_cell_Type_triggered()
+{
+    for(int i = 0; i < size; i++) {
+        for (int j = 0; j < size ; j++) {
+            m_container[i][j].changePaintType();
+        }
+    }
 }

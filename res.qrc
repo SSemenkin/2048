@@ -1,5 +1,11 @@
 <RCC>
     <qresource prefix="/">
         <file>fonts/DroidSansFallback.ttf</file>
+        <file>icons/prb.jpg</file>
+        <file>icons/nikolya.jpg</file>
+        <file>icons/vlad.jpg</file>
+        <file>icons/iron.jpg</file>
+        <file>icons/rude.jpg</file>
+        <file>icons/jelezlo.jpg</file>
     </qresource>
 </RCC>
