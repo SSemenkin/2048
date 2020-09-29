@@ -4,6 +4,7 @@
 #include <QWidget>
 #include <QPainter>
 #include <QPixmap>
+#include <QTimer>
 #include <QMap>
 
 class Cell2048 : public QWidget
@@ -19,6 +20,8 @@ public:
         paintDigits  = !paintDigits;
         update();
     };
+    void startAnimated(int mcsec) ;
+    bool isAnimatedAvaliable() const {return isAnimated;}
 
 
 
@@ -34,6 +37,7 @@ private:
 
     QString m_text;
     bool paintDigits;
+    bool isAnimated;
 };
 
 #endif // CELL2048_H

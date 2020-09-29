@@ -6,8 +6,7 @@
 #include <QMessageBox>
 #include <QSettings>
 #include <QPropertyAnimation>
-#include <QTimer>
-#include <QDebug>
+
 
 #include "cell2048.h"
 #include "scorelogo.h"
@@ -68,8 +67,7 @@ private:
 
     int count = 0; // not sure about this
 
-    QTimer keyEventTimer;
-    bool animationEnabled;
+
 
 };
 #endif // MAINWINDOW_H

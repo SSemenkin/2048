@@ -1,10 +1,22 @@
 #include "cell2048.h"
 
-Cell2048::Cell2048(QWidget *parent) : QWidget(parent), m_text (""), paintDigits(true)
+Cell2048::Cell2048(QWidget *parent) : QWidget(parent), m_text (""), paintDigits(true), isAnimated(true)
 {
     auto m_font = this->font ();
     m_font.setPointSize (m_font.pointSize () * 2);
     this->setFont (m_font);
+}
+
+void Cell2048::startAnimated(int mcsec)
+{
+    isAnimated  = false;
+    QTimer *timer = new QTimer(this);
+    timer->start(mcsec * 3);
+    QObject::connect( timer, &QTimer::timeout, [=] () {
+        isAnimated = true;
+        timer->stop();
+        delete timer;
+    });
 }
 
 void Cell2048::paintEvent(QPaintEvent */*event*/)
