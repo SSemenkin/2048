@@ -21,6 +21,12 @@ MainWindow::MainWindow(QWidget *parent)
     });
     QObject::connect (ui->action_4, &QAction::triggered, qApp, &QCoreApplication::quit);
 
+    QObject::connect(&keyEventTimer, &QTimer::timeout, [=] () {
+        if(animationEnabled) qDebug() << "hOW";
+        animationEnabled = true;
+        keyEventTimer.stop();
+    });
+
 }
 
 MainWindow::~MainWindow()
@@ -35,6 +41,7 @@ MainWindow::~MainWindow()
 void MainWindow::keyPressEvent(QKeyEvent *event)
 {
 
+    if(animationEnabled) {
         switch (event->key ()) {
         case Qt::Key_A:
         case Qt::Key_Left :
@@ -60,6 +67,9 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
             checkForGameOver ();
             break;
         }
+        animationEnabled = false;
+        keyEventTimer.start(animationDuration * 2);
+    }
 
     QMainWindow::keyPressEvent(event);
 }
@@ -377,22 +387,23 @@ void MainWindow::generateRandom()
 
     int index = rand() % emptyCells.size ();
 
-//    if(count > size/2) {
-//        for (int i = 0; i < size ; i++)
-//            for (int j=0; j< size;j++) {
-//                if(emptyCells[index] == &m_container[i][j]) {
-//                    QPropertyAnimation *animation = new QPropertyAnimation(emptyCells[index], "geometry", emptyCells[index]);
-//                    animation->setDuration(animationDuration);
-//                    animation->setStartValue(emptyCells[index]->geometry().adjusted(emptyCells[index]->x()-width()/2,
-//                                                                                    emptyCells[index]->y()-height()/2,
-//                                                                                    emptyCells[index]->width()/2,
-//                                                                                    emptyCells[index]->height()/2));
-//                    animation->setEndValue(emptyCells[index]->geometry());
-//                    animation->start();
-//                }
-//            }
-//    }
-//    count ++;
+    if(count > size/2) {
+        for (int i = 0; i < size ; i++)
+            for (int j=0; j< size;j++) {
+                if(emptyCells[index] == &m_container[i][j]) {
+                    QPropertyAnimation *animation = new QPropertyAnimation(emptyCells[index], "geometry", emptyCells[index]);
+                    animation->setDuration(animationDuration);
+                    animation->setStartValue(emptyCells[index]->geometry().adjusted(emptyCells[index]->x()-width()/2,
+                                                                                    emptyCells[index]->y()-height()/2,
+                                                                                    emptyCells[index]->width()/2,
+                                                                                    emptyCells[index]->height()/2));
+                    animation->setEndValue(emptyCells[index]->geometry());
+                    animation->start();
+                    break;
+                }
+            }
+    }
+    count ++;
 
     emptyCells[index]->setText (index % 2 ? "2" : "4");
 

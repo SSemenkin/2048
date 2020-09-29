@@ -7,6 +7,7 @@
 #include <QSettings>
 #include <QPropertyAnimation>
 #include <QTimer>
+#include <QDebug>
 
 #include "cell2048.h"
 #include "scorelogo.h"
@@ -57,7 +58,7 @@ private:
     Ui::MainWindow *ui;
 
     int size = 4;
-    const int animationDuration = 25;
+    const int animationDuration = 100;
 
     Cell2048** m_container;
 
