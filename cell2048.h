@@ -27,11 +27,14 @@ public:
 
 
 
+
 protected:
     void paintEvent(QPaintEvent *event) override ;
+    void resizeEvent(QResizeEvent *event) override;
 signals:
 
 private:
+
     QColor backgroundFromValue(const int &value) ;
     QPixmap mapFromValue() ;
     QColor foregroundColor;

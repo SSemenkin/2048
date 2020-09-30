@@ -10,7 +10,6 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
     this->setWindowTitle (qApp->applicationName ());
     srand(time(NULL));
-    ui->gridLayout->setSpacing(10);
     ui->gridLayout->addWidget (currentScore, 0, 1);
     ui->gridLayout->addWidget (bestScore, 0, 2);
     ui->gridLayout->addWidget (button, 0, 3);
@@ -20,6 +19,7 @@ MainWindow::MainWindow(QWidget *parent)
         this->restartGame ();
     });
     QObject::connect (ui->action_4, &QAction::triggered, qApp, &QCoreApplication::quit);
+
 }
 
 MainWindow::~MainWindow()
@@ -83,7 +83,7 @@ void MainWindow::moveLeft()
     for (int row = 0; row < size; row++) {
         for (int column = 0; column < size - 1 ;column ++) {
             if(m_container[row][column].text () == m_container[row][column + 1].text () && !m_container[row][column].text ().isEmpty ()) {
-                if(m_container[row][column].isAnimatedAvaliable()) animateCell(row, column, LEFT);
+                animateCell(row, column, LEFT);
                 m_container[row][column].setText (QString::number (m_container[row][column].text ().toInt () * 2));
                 updateScore (m_container[row][column].text ().toInt ());
                 m_container[row][column + 1].setText ("");
@@ -129,7 +129,7 @@ void MainWindow::moveRight()
     for (int row = 0; row < size; row++) {
         for (int column = size - 1; column > 0 ;column --) {
             if(m_container[row][column].text () == m_container[row][column - 1].text () && !m_container[row][column].text ().isEmpty ()) {
-                if(m_container[row][column].isAnimatedAvaliable()) animateCell(row, column, RIGHT);
+                animateCell(row, column, RIGHT);
                 m_container[row][column].setText (QString::number (m_container[row][column].text ().toInt () * 2));
                 updateScore (m_container[row][column].text ().toInt ());
                 m_container[row][column - 1].setText ("");
@@ -175,7 +175,7 @@ void MainWindow::moveUp()
     for (int column = 0; column < size; column ++) {
         for( int row = 0; row < size - 1; row ++) {
             if(m_container[row] [column].text () == m_container[row+1][column].text () && !m_container[row][column].text ().isEmpty ()) {
-                if(m_container[row][column].isAnimatedAvaliable()) animateCell(row, column, UP);
+                animateCell(row, column, UP);
                 m_container[row] [column].setText (QString::number (m_container[row][column].text ().toInt () * 2));
                 updateScore (m_container[row][column].text ().toInt ());
                 m_container[row+1][column].setText ("");
@@ -220,7 +220,7 @@ void MainWindow::moveDown()
     for (int column = 0; column < size; column ++) {
         for( int row = size - 1; row > 0 ; row --) {
             if(m_container[row] [column].text () == m_container[row - 1][column].text () && !m_container[row][column].text ().isEmpty ()) {
-                if(m_container[row][column].isAnimatedAvaliable()) animateCell(row, column, DOWN);
+                animateCell(row, column, DOWN);
                 m_container[row] [column].setText (QString::number (m_container[row][column].text ().toInt () * 2));
                 updateScore (m_container[row][column].text ().toInt ());
                 m_container[row - 1][column].setText ("");
@@ -337,6 +337,7 @@ void MainWindow::updateBestScoreIsNeeded(int value)
 
 void MainWindow::animateCell(int row, int column, MainWindow::Direction direction)
 {
+    if(m_container[row][column].isAnimatedAvaliable()) {
     QPropertyAnimation *animation = new QPropertyAnimation(&m_container[row][column], "geometry", &m_container[row][column]);
     animation->setDuration(animationDuration);
     switch (direction) {
@@ -357,6 +358,7 @@ void MainWindow::animateCell(int row, int column, MainWindow::Direction directio
     animation->setEasingCurve(QEasingCurve::OutInQuart);
     animation->start(QAbstractAnimation::DeleteWhenStopped);
     m_container[row][column].startAnimated(animationDuration);
+    }
 }
 
 void MainWindow::initiateGame()

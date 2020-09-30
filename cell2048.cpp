@@ -34,6 +34,18 @@ void Cell2048::paintEvent(QPaintEvent */*event*/)
     }
 }
 
+void Cell2048::resizeEvent(QResizeEvent *event)
+{
+    QSize s = size();
+
+       if (s.height()<s.width()) {
+           resize(s.height(), s.height());
+       } else {
+           resize(s.width(), s.width());
+       }
+       return;
+}
+
 QColor Cell2048::backgroundFromValue(const int &value)
 {
     int powTwo = 0;
