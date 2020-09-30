@@ -338,26 +338,25 @@ void MainWindow::updateBestScoreIsNeeded(int value)
 void MainWindow::animateCell(int row, int column, MainWindow::Direction direction)
 {
     if(m_container[row][column].isAnimatedAvaliable()) {
-    QPropertyAnimation *animation = new QPropertyAnimation(&m_container[row][column], "geometry", &m_container[row][column]);
-    animation->setDuration(animationDuration);
-    switch (direction) {
-    case Direction::LEFT:
-        animation->setStartValue(m_container[row][column].geometry().adjusted(100, 0, 100, 0));
-        break;
-    case Direction::RIGHT:
-        animation->setStartValue(m_container[row][column].geometry().adjusted(-100, 0, 100, 0));
-        break;
-    case Direction::UP:
-        animation->setStartValue(m_container[row][column].geometry().adjusted(0, 100, 0, 100));
-        break;
-    case Direction::DOWN:
-        animation->setStartValue(m_container[row][column].geometry().adjusted(0, -100, 0, -100));
-        break;
-    }
-    animation->setEndValue(m_container[row][column].geometry());
-    animation->setEasingCurve(QEasingCurve::OutInQuart);
-    animation->start(QAbstractAnimation::DeleteWhenStopped);
-    m_container[row][column].startAnimated(animationDuration);
+        QPropertyAnimation *animation = new QPropertyAnimation(&m_container[row][column], "geometry", &m_container[row][column]);
+        animation->setDuration(animationDuration);
+        switch (direction) {
+        case Direction::LEFT:
+            animation->setStartValue(m_container[row][column].geometry().adjusted(100, 0, 100, 0));
+            break;
+        case Direction::RIGHT:
+            animation->setStartValue(m_container[row][column].geometry().adjusted(-100, 0, 100, 0));
+            break;
+        case Direction::UP:
+            animation->setStartValue(m_container[row][column].geometry().adjusted(0, 100, 0, 100));
+            break;
+        case Direction::DOWN:
+            animation->setStartValue(m_container[row][column].geometry().adjusted(0, -100, 0, -100));
+            break;
+        }
+        animation->setEndValue(m_container[row][column].geometry());
+        animation->start(QAbstractAnimation::DeleteWhenStopped);
+        m_container[row][column].startAnimated(animationDuration);
     }
 }
 

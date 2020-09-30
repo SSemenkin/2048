@@ -19,6 +19,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     cell2048.cpp \
+    digitalanimation.cpp \
     main.cpp \
     mainwindow.cpp \
     newgamebutton.cpp \
@@ -26,6 +27,7 @@ SOURCES += \
 
 HEADERS += \
     cell2048.h \
+    digitalanimation.h \
     mainwindow.h \
     newgamebutton.h \
     scorelogo.h
