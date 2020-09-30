@@ -14,7 +14,7 @@ void NewGameButton::paintEvent(QPaintEvent *)
 
     painter.drawRoundedRect ( QRect( 0, this->height ()/2 - this->height ()/4, this->width (),this->height ()/2), this->width ()/20, this->height ()/20);
 
-     painter.setPen (QColor("#776E62"));
+    painter.setPen (QColor("#776E62"));
 
     painter.drawText (QRect( 0, this->height ()/2 - this->height ()/4, this->width (),this->height ()/2), Qt::AlignCenter, "New Game");
 }

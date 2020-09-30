@@ -9,7 +9,7 @@ int main(int argc, char *argv[])
     a.setStyle (QStyleFactory::create("fusion"));
     a.setOrganizationName ("Smena LTD.");
     a.setApplicationName ("2048 The Game");
-    a.setFont (QFont(":/fonts/DroidSansFallback.ttf"));
+    //a.setFont (QFont(":/fonts/DroidSansFallback.ttf"));
     MainWindow w;
     w.show();
     return a.exec();

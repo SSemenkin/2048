@@ -85,7 +85,7 @@ void MainWindow::moveLeft()
     for (int row = 0; row < size; row++) {
         for (int column = 0; column < size - 1 ;column ++) {
             if(m_container[row][column].text () == m_container[row][column + 1].text () && !m_container[row][column].text ().isEmpty ()) {
-                if(m_container[row][column].isEnabled()) animateCell(row, column, LEFT);
+                if(m_container[row][column].isAnimatedAvaliable()) animateCell(row, column, LEFT);
                 m_container[row][column].setText (QString::number (m_container[row][column].text ().toInt () * 2));
                 updateScore (m_container[row][column].text ().toInt ());
                 m_container[row][column + 1].setText ("");
@@ -131,7 +131,7 @@ void MainWindow::moveRight()
     for (int row = 0; row < size; row++) {
         for (int column = size - 1; column > 0 ;column --) {
             if(m_container[row][column].text () == m_container[row][column - 1].text () && !m_container[row][column].text ().isEmpty ()) {
-                if(m_container[row][column].isEnabled()) animateCell(row, column, RIGHT);
+                if(m_container[row][column].isAnimatedAvaliable()) animateCell(row, column, RIGHT);
                 m_container[row][column].setText (QString::number (m_container[row][column].text ().toInt () * 2));
                 updateScore (m_container[row][column].text ().toInt ());
                 m_container[row][column - 1].setText ("");
@@ -177,7 +177,7 @@ void MainWindow::moveUp()
     for (int column = 0; column < size; column ++) {
         for( int row = 0; row < size - 1; row ++) {
             if(m_container[row] [column].text () == m_container[row+1][column].text () && !m_container[row][column].text ().isEmpty ()) {
-                if(m_container[row][column].isEnabled()) animateCell(row, column, UP);
+                if(m_container[row][column].isAnimatedAvaliable()) animateCell(row, column, UP);
                 m_container[row] [column].setText (QString::number (m_container[row][column].text ().toInt () * 2));
                 updateScore (m_container[row][column].text ().toInt ());
                 m_container[row+1][column].setText ("");
@@ -222,7 +222,7 @@ void MainWindow::moveDown()
     for (int column = 0; column < size; column ++) {
         for( int row = size - 1; row > 0 ; row --) {
             if(m_container[row] [column].text () == m_container[row - 1][column].text () && !m_container[row][column].text ().isEmpty ()) {
-                if(m_container[row][column].isEnabled()) animateCell(row, column, DOWN);
+                if(m_container[row][column].isAnimatedAvaliable()) animateCell(row, column, DOWN);
                 m_container[row] [column].setText (QString::number (m_container[row][column].text ().toInt () * 2));
                 updateScore (m_container[row][column].text ().toInt ());
                 m_container[row - 1][column].setText ("");
@@ -345,7 +345,7 @@ void MainWindow::animateCell(int row, int column, MainWindow::Direction directio
     }
     animation->setEndValue(m_container[row][column].geometry());
     animation->setEasingCurve(QEasingCurve::OutInQuart);
-    animation->start();
+    animation->start(QAbstractAnimation::DeleteWhenStopped);
     m_container[row][column].startAnimated(animationDuration);
 }
 
@@ -386,12 +386,13 @@ void MainWindow::generateRandom()
                     if(m_container[i][j].isAnimatedAvaliable()) {
                         QPropertyAnimation *animation = new QPropertyAnimation(emptyCells[index], "geometry", emptyCells[index]);
                         animation->setDuration(animationDuration);
-                        animation->setStartValue(emptyCells[index]->geometry().adjusted(emptyCells[index]->x() - 50,
-                                                                                        emptyCells[index]->y()- 50,
+                        animation->setStartValue(emptyCells[index]->geometry().adjusted(emptyCells[index]->x() + emptyCells[index]->width()/2 - emptyCells[index]->width()/4,
+                                                                                        emptyCells[index]->y() + emptyCells[index]->height()/2 - emptyCells[index]->height()/4,
                                                                                         emptyCells[index]->width()/2,
                                                                                         emptyCells[index]->height()/2));
                         animation->setEndValue(emptyCells[index]->geometry());
-                        animation->start();
+                        animation->setEasingCurve(QEasingCurve::Type::InOutQuad);
+                        animation->start(QAbstractAnimation::DeleteWhenStopped);
                         m_container[i][j].startAnimated(animationDuration);
                     }
                     break;
