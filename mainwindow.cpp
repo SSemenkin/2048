@@ -20,9 +20,6 @@ MainWindow::MainWindow(QWidget *parent)
         this->restartGame ();
     });
     QObject::connect (ui->action_4, &QAction::triggered, qApp, &QCoreApplication::quit);
-
-
-    m_container[0][0].setText("2048");
 }
 
 MainWindow::~MainWindow()

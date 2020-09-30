@@ -36,15 +36,16 @@ void Cell2048::paintEvent(QPaintEvent */*event*/)
 
 QColor Cell2048::backgroundFromValue(const int &value)
 {
-    uint powTwo = 0;
+    int powTwo = 0;
     uint tmpValue = value;
     while (tmpValue) {
         tmpValue/=2;
         powTwo++;
     }
-    QColor colors[] = {"#EEE4DA", "#EDE0C8", "#F2B179", "#F59563", "#F67C5F", "#F65E3B", "#EDCF72", "#EDCC61", "#EDC850", "#EDC53F", "#EDC22E", "#3C3A32"};
+    powTwo--;
+    QVector<QColor> colors = {"#EEE4DA", "#EDE0C8", "#F2B179", "#F59563", "#F67C5F", "#F65E3B", "#EDCF72", "#EDCC61", "#EDC850", "#EDC53F", "#EDC22E", "#00FFFF"};
     powTwo <=3  ? foregroundColor = QColor("#776E62") : foregroundColor = QColor("#F9F6F2");
-    return powTwo < 12 ? colors[powTwo] : QColor();
+    return powTwo < colors.size() ? colors[powTwo] : QColor(192,192,192);
 }
 
 QPixmap Cell2048::mapFromValue()
