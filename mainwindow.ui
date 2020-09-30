@@ -100,7 +100,7 @@
   </action>
   <action name="actionChange_cell_Type">
    <property name="text">
-    <string>Change cell Type</string>
+    <string>Change cell type</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+L</string>

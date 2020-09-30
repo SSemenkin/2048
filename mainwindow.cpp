@@ -258,7 +258,8 @@ void MainWindow::updateScore(int value)
 
 void MainWindow::restartGame( int size)
 {
-
+    type = m_container[0][0].paintType();
+    isWin = false;
     count = 0;
     updateBestScoreIsNeeded (bestScore->value ());
     currentScore->setValue ( 0);
@@ -283,6 +284,7 @@ bool MainWindow::isGameOver()
     //есть ли пустые клетки?
     for(int i = 0; i < size; i++) {
         for (int j = 0; j <size; j++) {
+            if(m_container[i][j].text() == "2048") isWin = true;
             if(m_container[i][j].text ().isEmpty ()) return false;
         }
     }
@@ -309,11 +311,17 @@ bool MainWindow::isGameOver()
 void MainWindow::checkForGameOver()
 {
     if(isGameOver ()) {
+        if(isWin) {
+            if(QMessageBox::question (this, "", "Hoooray!!!You win!!!\nDo you want to start new game?") == QMessageBox::StandardButton::Yes) {
+                restartGame ();
+            }
+        }
         updateBestScoreIsNeeded (bestScore->value ());
         if(QMessageBox::question (this, "", "Game Over!You lose!\nDo you want to start new game?") == QMessageBox::StandardButton::Yes) {
             restartGame ();
         }
     }
+
 }
 
 void MainWindow::updateBestScoreIsNeeded(int value)
@@ -331,16 +339,16 @@ void MainWindow::animateCell(int row, int column, MainWindow::Direction directio
     animation->setDuration(animationDuration);
     switch (direction) {
     case Direction::LEFT:
-        animation->setStartValue(m_container[row][column].geometry().adjusted(25, 0, 0, 0));
+        animation->setStartValue(m_container[row][column].geometry().adjusted(100, 0, 100, 0));
         break;
     case Direction::RIGHT:
-        animation->setStartValue(m_container[row][column].geometry().adjusted(-25, 0, 0, 0));
+        animation->setStartValue(m_container[row][column].geometry().adjusted(-100, 0, 100, 0));
         break;
     case Direction::UP:
-        animation->setStartValue(m_container[row][column].geometry().adjusted(0, 25, 0, 0));
+        animation->setStartValue(m_container[row][column].geometry().adjusted(0, 100, 0, 100));
         break;
     case Direction::DOWN:
-        animation->setStartValue(m_container[row][column].geometry().adjusted(0, -25, 0, 0));
+        animation->setStartValue(m_container[row][column].geometry().adjusted(0, -100, 0, -100));
         break;
     }
     animation->setEndValue(m_container[row][column].geometry());
@@ -360,6 +368,7 @@ void MainWindow::initiateGame()
     for (int i = 0; i < size; i ++) {
         for( int j = 0; j < size; j++) {
             ui->gridLayout->addWidget (&m_container[i][j], i+1 , j);
+            if( m_container[i][j].paintType() != type) m_container[i][j].changePaintType();
         }
     }
     for (int i = 0; i < size/2; i ++)
@@ -386,10 +395,17 @@ void MainWindow::generateRandom()
                     if(m_container[i][j].isAnimatedAvaliable()) {
                         QPropertyAnimation *animation = new QPropertyAnimation(emptyCells[index], "geometry", emptyCells[index]);
                         animation->setDuration(animationDuration);
-                        animation->setStartValue(emptyCells[index]->geometry().adjusted(emptyCells[index]->x() + emptyCells[index]->width()/2 - emptyCells[index]->width()/4,
-                                                                                        emptyCells[index]->y() + emptyCells[index]->height()/2 - emptyCells[index]->height()/4,
-                                                                                        emptyCells[index]->width()/2,
-                                                                                        emptyCells[index]->height()/2));
+
+                        if (i < size/2 && j < size/2) {
+                            animation->setStartValue(emptyCells[index]->geometry().adjusted(-200, -200, -200, -200));
+                        } else if (i < size/2 && j > size/2){
+                            animation->setStartValue(emptyCells[index]->geometry().adjusted(200, -200, 200, -200));
+                        } else if (i >= size/2 && j < size/2) {
+                            animation->setStartValue(emptyCells[index]->geometry().adjusted(-200, 200, -200, 200));
+                        } else {
+                            animation->setStartValue(emptyCells[index]->geometry().adjusted(200, 200, 200, 200));
+                        }
+
                         animation->setEndValue(emptyCells[index]->geometry());
                         animation->setEasingCurve(QEasingCurve::Type::InOutQuad);
                         animation->start(QAbstractAnimation::DeleteWhenStopped);
@@ -401,7 +417,7 @@ void MainWindow::generateRandom()
     }
     count ++;
 
-    emptyCells[index]->setText (index % 2 ? "2" : "4");
+    emptyCells[index]->setText (index % 4 ? "2" : "4");
 
 }
 

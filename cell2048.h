@@ -16,12 +16,13 @@ public:
 
     QString text () const { return m_text; }
     void setText(const QString &text) {m_text = text; update (); }
+    bool paintType () const { return paintDigits;}
     void changePaintType () {
         paintDigits  = !paintDigits;
         update();
     };
     void startAnimated(int mcsec) ;
-    bool isAnimatedAvaliable() const {return isAnimated;}
+    bool isAnimatedAvaliable() const { return isAnimated;}
 
 
 

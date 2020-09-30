@@ -65,8 +65,10 @@ private:
     NewGameButton *button;
     QSettings *settings;
 
-    int count = 0; // not sure about this
 
+    int count = 0; // not sure about this
+    bool type = true;
+    bool isWin = false;
 
 
 };
