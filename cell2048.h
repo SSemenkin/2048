@@ -39,6 +39,7 @@ private:
     QString m_text;
     bool paintDigits;
     bool isAnimated;
+
 };
 
 #endif // CELL2048_H

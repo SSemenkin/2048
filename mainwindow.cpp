@@ -22,6 +22,7 @@ MainWindow::MainWindow(QWidget *parent)
     QObject::connect (ui->action_4, &QAction::triggered, qApp, &QCoreApplication::quit);
 
 
+    m_container[0][0].setText("2048");
 }
 
 MainWindow::~MainWindow()
@@ -259,7 +260,6 @@ void MainWindow::updateScore(int value)
 void MainWindow::restartGame( int size)
 {
     type = m_container[0][0].paintType();
-    isWin = false;
     count = 0;
     updateBestScoreIsNeeded (bestScore->value ());
     currentScore->setValue ( 0);
@@ -284,7 +284,6 @@ bool MainWindow::isGameOver()
     //есть ли пустые клетки?
     for(int i = 0; i < size; i++) {
         for (int j = 0; j <size; j++) {
-            if(m_container[i][j].text() == "2048") isWin = true;
             if(m_container[i][j].text ().isEmpty ()) return false;
         }
     }
@@ -310,12 +309,18 @@ bool MainWindow::isGameOver()
 
 void MainWindow::checkForGameOver()
 {
-    if(isGameOver ()) {
-        if(isWin) {
-            if(QMessageBox::question (this, "", "Hoooray!!!You win!!!\nDo you want to start new game?") == QMessageBox::StandardButton::Yes) {
-                restartGame ();
+    for (int i = 0; i < size; i++) {
+        for (int j = 0; j < size; j++) {
+            if (m_container[i][j].text().toInt() == 2048) {
+                if(QMessageBox::question (this, "", "Hoooray!!!You win!!!\nDo you want to start new game?") == QMessageBox::StandardButton::Yes) {
+                    restartGame ();
+                }
             }
         }
+    }
+
+    if(isGameOver ()) {
+
         updateBestScoreIsNeeded (bestScore->value ());
         if(QMessageBox::question (this, "", "Game Over!You lose!\nDo you want to start new game?") == QMessageBox::StandardButton::Yes) {
             restartGame ();
@@ -364,6 +369,7 @@ void MainWindow::initiateGame()
     for (int i = 0; i < size; i++) {
         m_container[i] = new Cell2048[size];
     }
+
 
     for (int i = 0; i < size; i ++) {
         for( int j = 0; j < size; j++) {

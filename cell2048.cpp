@@ -49,16 +49,15 @@ QColor Cell2048::backgroundFromValue(const int &value)
 
 QPixmap Cell2048::mapFromValue()
 {
-    QVector<QPixmap> faces = {QPixmap(),QPixmap(":/icons/prb2.jpg"),QPixmap(":/icons/archer.jpg"), QPixmap(":/icons/kolya.jpg"),
+   QVector<QPixmap> m_faces = {QPixmap(),QPixmap(":/icons/prb2.jpg"),QPixmap(":/icons/archer.jpg"), QPixmap(":/icons/kolya.jpg"),
                               QPixmap(":/icons/rude.jpg"), QPixmap(":/icons/iron.jpg"), QPixmap(":/icons/jelezlo.jpg"),
-                             QPixmap(":/icons/shtorm.jpg"), QPixmap(":/icons/mallboro.jpg"), QPixmap(":/icons/andrew.jpg"),
-                             QPixmap(":/icons/vlad2.jpg"), QPixmap(":/icons/jekezniy_kurdos.jpg")};
-
+                              QPixmap(":/icons/shtorm.jpg"), QPixmap(":/icons/mallboro.jpg"), QPixmap(":/icons/andrew.jpg"),
+                              QPixmap(":/icons/vlad2.jpg"), QPixmap(":/icons/jekezniy_kurdos.jpg")};
     QMap <QString, QPixmap> container;
 
     int value = 2;
-    for ( int i = 0; i < faces.size(); i++) {
-        container[QString::number(value/2)] = faces[i];
+    for ( int i = 0; i < m_faces.size(); i++) {
+        container[QString::number(value/2)] = m_faces[i];
         value *=2;
     }
 
