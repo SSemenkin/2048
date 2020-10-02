@@ -13,7 +13,6 @@ class Cell2048 : public QWidget
 public:
 
     explicit Cell2048(QWidget *parent = nullptr);
-
     QString text () const { return m_text; }
     void setText(const QString &text) {m_text = text; update (); }
     bool paintType () const { return paintDigits;}

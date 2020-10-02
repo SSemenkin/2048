@@ -19,7 +19,6 @@ MainWindow::MainWindow(QWidget *parent)
         this->restartGame ();
     });
     QObject::connect (ui->action_4, &QAction::triggered, qApp, &QCoreApplication::quit);
-
 }
 
 MainWindow::~MainWindow()

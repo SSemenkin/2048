@@ -9,18 +9,16 @@ void DigitalAnimation::start()
 {
    QPropertyAnimation *animation = new QPropertyAnimation(this, "geometry", this);
 
+
    animation->setDuration  ( animationDuration);
    animation->setStartValue( this->geometry());
    animation->setKeyValueAt(0.5, this->geometry().adjusted(0, this->height(), 0, this->height()) );
    animation->setEasingCurve(QEasingCurve::InOutCubic);
    animation->setEndValue  ( this->geometry());
-   animation->start(QAbstractAnimation::DeleteWhenStopped);
-   QTimer *timer = new QTimer(this);
-   timer->start(animationDuration);
-   QObject::connect(timer, &QTimer::timeout ,[=] () {
-       timer->stop();
-       timer->deleteLater();
-       this->hide();
+   animation->start();
+
+
+   QObject::connect(animation, &QPropertyAnimation::finished ,[=] () {
        delete this;
    });
 
@@ -28,8 +26,12 @@ void DigitalAnimation::start()
 
 void DigitalAnimation::paintEvent(QPaintEvent *)
 {
+    if(m_value == 0)
+        return;
     QPainter p(this);
     p.setBrush(Qt::transparent);
     p.setPen(QColor("#808080"));
-    p.drawText(this->rect(), Qt::AlignCenter, QString("+%1").arg(m_value));
+    QString text;
+    m_value >=0 ? text = QString("+%1").arg(m_value) : text = QString("%1").arg(m_value);
+    p.drawText(this->rect(), Qt::AlignCenter, text);
 }

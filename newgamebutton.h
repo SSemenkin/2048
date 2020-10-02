@@ -18,6 +18,8 @@ signals:
 protected:
     void paintEvent(QPaintEvent *) override;
     void mouseReleaseEvent(QMouseEvent *event) override ;
+    void enterEvent(QEvent *) override;
+    void leaveEvent(QEvent *) override;
 private:
     bool isHover = false;
 

@@ -21,7 +21,7 @@ signals:
 private:
     int m_value;
 
-    const int animationDuration = 1000;
+    const int animationDuration = 500;
 };
 
 #endif // DIGITALANIMATION_H
