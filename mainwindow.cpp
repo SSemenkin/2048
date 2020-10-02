@@ -257,6 +257,7 @@ void MainWindow::restartGame( int size)
 {
     type = m_container[0][0].paintType();
     count = 0;
+    isContinueAfterWinning = false;
     updateBestScoreIsNeeded (bestScore->value ());
     currentScore->setValue ( 0);
 
@@ -307,10 +308,10 @@ void MainWindow::checkForGameOver()
 {
     for (int i = 0; i < size; i++) {
         for (int j = 0; j < size; j++) {
-            if (m_container[i][j].text().toInt() == 2048) {
+            if (m_container[i][j].text().toInt() == 2048 && !isContinueAfterWinning) {
                 if(QMessageBox::question (this, "", "Hoooray!!!You win!!!\nDo you want to start new game?") == QMessageBox::StandardButton::Yes) {
                     restartGame ();
-                }
+                } else isContinueAfterWinning = true;
             }
         }
     }
@@ -420,7 +421,7 @@ void MainWindow::generateRandom()
     }
     count ++;
 
-    emptyCells[index]->setText (index % 4 ? "2" : "4");
+    emptyCells[index]->setText (index % 10 ? "2" : "4");
 
 }
 

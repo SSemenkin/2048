@@ -2,9 +2,7 @@
 
 NewGameButton::NewGameButton(QWidget *parent) : QWidget(parent)
 {
-    auto m_font = this->font();
-    m_font.setPointSize(m_font.pointSize() * 2);
-    this->setFont(m_font);
+
 }
 
 void NewGameButton::paintEvent(QPaintEvent *)

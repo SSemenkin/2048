@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include <QPainter>
+#include <QDebug>
 #include "digitalanimation.h"
 
 class ScoreLogo : public QWidget

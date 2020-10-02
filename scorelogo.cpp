@@ -2,9 +2,7 @@
 
 ScoreLogo::ScoreLogo(QString title,QWidget *parent) : QWidget(parent), m_title (title), m_value(0)
 {
-    auto m_font = this->font();
-    m_font.setPointSize(m_font.pointSize() * 2);
-    this->setFont(m_font);
+
 }
 
 void ScoreLogo::setValue(int value)
@@ -15,6 +13,9 @@ void ScoreLogo::setValue(int value)
     } else {
         animation = new DigitalAnimation(abs(m_value - value),this);
     }
+
+    animation->setGeometry (this->rect ().adjusted (0, -this->rect ().height (), 0, -this->rect ().height ()));
+
     animation->show();
     m_value = value;
     update ();

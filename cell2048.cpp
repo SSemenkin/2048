@@ -36,8 +36,7 @@ void Cell2048::paintEvent(QPaintEvent */*event*/)
 
 void Cell2048::resizeEvent(QResizeEvent */*event*/)
 {
-    QSize s = size();
-
+       QSize s = size();
        if (s.height()<s.width()) {
            resize(s.height(), s.height());
        } else {

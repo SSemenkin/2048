@@ -11,10 +11,10 @@ void DigitalAnimation::start()
 
 
    animation->setDuration  ( animationDuration);
-   animation->setStartValue( this->geometry());
-   animation->setKeyValueAt(0.5, this->geometry().adjusted(0, this->height(), 0, this->height()) );
+   animation->setStartValue( this->geometry ().adjusted (0, +100, 0, +100));
+   animation->setKeyValueAt(0.5, static_cast<QWidget*>(parent ())->rect ());
    animation->setEasingCurve(QEasingCurve::InOutCubic);
-   animation->setEndValue  ( this->geometry());
+   animation->setEndValue  ( this->geometry ().adjusted (0, +100, 0, +100));
    animation->start();
 
 

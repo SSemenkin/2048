@@ -57,7 +57,7 @@ private:
     Ui::MainWindow *ui;
 
     int size = 4;
-    const int animationDuration = 100;
+    const int animationDuration = 150;
 
     Cell2048** m_container;
 
@@ -68,6 +68,7 @@ private:
 
     int count = 0; // not sure about this
     bool type = true;
+    bool isContinueAfterWinning = false;
 
 
 
