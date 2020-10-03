@@ -29,8 +29,7 @@ void DigitalAnimation::paintEvent(QPaintEvent *)
     if(m_value == 0)
         return;
     QPainter p(this);
-    p.setBrush(Qt::transparent);
-    p.setPen(QColor("#808080"));
+    p.setPen(QColor("#EEE4DA"));
     QString text;
     m_value >=0 ? text = QString("+%1").arg(m_value) : text = QString("%1").arg(m_value);
     p.drawText(this->rect(), Qt::AlignCenter, text);

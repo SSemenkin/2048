@@ -25,8 +25,8 @@ void ScoreLogo::setValue(int value)
 void ScoreLogo::paintEvent(QPaintEvent */*event*/)
 {
     QPainter painter(this);
-    painter.setBrush(QColor("#EDE0C8"));
-    painter.setPen(QColor("#808080"));
+    painter.setBrush(QColor("#BBADA0"));
+    painter.setPen(QColor("#EEE4DA"));
     painter.setRenderHint (QPainter::Antialiasing);
     painter.drawRoundedRect ( QRect( 0, this->height ()/2 - this->height ()/4, this->width (), this->height ()/2), this->width ()/10, this->height ()/10);
     painter.drawText ( QRect( 0, this->height ()/2 - this->height ()/4, this->width (), this->height ()/2), Qt::AlignCenter, m_title.arg ( m_value));

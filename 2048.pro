@@ -23,14 +23,16 @@ SOURCES += \
     main.cpp \
     mainwindow.cpp \
     newgamebutton.cpp \
-    scorelogo.cpp
+    scorelogo.cpp \
+    undobutton.cpp
 
 HEADERS += \
     cell2048.h \
     digitalanimation.h \
     mainwindow.h \
     newgamebutton.h \
-    scorelogo.h
+    scorelogo.h \
+    undobutton.h
 
 FORMS += \
     mainwindow.ui

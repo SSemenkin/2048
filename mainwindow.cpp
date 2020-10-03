@@ -4,12 +4,14 @@
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow), bestScore(new ScoreLogo("Best Score :\n %1", this)),
-    currentScore (new ScoreLogo("Score :\n %1", this)), button( new NewGameButton(this)),
+    currentScore (new ScoreLogo("Score :\n %1", this)), button( new NewGameButton(this)), undoButton(new UndoButton(this)),
     settings (new QSettings( qApp->organizationName (), qApp->applicationName (), this))
 {
     ui->setupUi(this);
     this->setWindowTitle (qApp->applicationName ());
     srand(time(NULL));
+
+    ui->gridLayout->addWidget (undoButton, 0, 0);
     ui->gridLayout->addWidget (currentScore, 0, 1);
     ui->gridLayout->addWidget (bestScore, 0, 2);
     ui->gridLayout->addWidget (button, 0, 3);
@@ -70,6 +72,7 @@ void MainWindow::moveLeft()
     for (int row = 0; row < size; row++) {
         for (int column = 0; column < size - 1; column ++) {
             if ( m_container[row][column].text ().isEmpty () && !m_container[row][column + 1].text ().isEmpty ()) {
+                m_container[row][column].animate(Cell2048::Direction::Left);
                 m_container[row][column].setText (m_container[row][column + 1].text());
                 m_container[row][column+1].setText ("");
                 column = 0;
@@ -82,7 +85,7 @@ void MainWindow::moveLeft()
     for (int row = 0; row < size; row++) {
         for (int column = 0; column < size - 1 ;column ++) {
             if(m_container[row][column].text () == m_container[row][column + 1].text () && !m_container[row][column].text ().isEmpty ()) {
-                animateCell(row, column, LEFT);
+                m_container[row][column].animate(Cell2048::Direction::Left);
                 m_container[row][column].setText (QString::number (m_container[row][column].text ().toInt () * 2));
                 updateScore (m_container[row][column].text ().toInt ());
                 m_container[row][column + 1].setText ("");
@@ -95,6 +98,7 @@ void MainWindow::moveLeft()
     for (int row = 0; row < size; row++) {
         for (int column = 0; column < size-1; column ++) {
             if ( m_container[row][column].text ().isEmpty () && !m_container[row][column + 1].text ().isEmpty ()) {
+                m_container[row][column].animate(Cell2048::Direction::Left);
                 m_container[row][column].setText (m_container[row][column + 1].text());
                 m_container[row][column + 1].setText ("");
                 column = 0;
@@ -116,6 +120,7 @@ void MainWindow::moveRight()
     for (int row = 0; row < size; row ++){
         for (int column = size - 1; column > 0; column -- ){
             if(m_container[row][column].text().isEmpty () && !m_container[row][column - 1].text ().isEmpty ()) {
+                m_container[row][column].animate(Cell2048::Direction::Right);
                 m_container[row][column].setText (m_container[row][column - 1].text ());
                 m_container[row][column - 1].setText ("");
                 row = 0;
@@ -128,7 +133,7 @@ void MainWindow::moveRight()
     for (int row = 0; row < size; row++) {
         for (int column = size - 1; column > 0 ;column --) {
             if(m_container[row][column].text () == m_container[row][column - 1].text () && !m_container[row][column].text ().isEmpty ()) {
-                animateCell(row, column, RIGHT);
+                m_container[row][column].animate(Cell2048::Direction::Right);
                 m_container[row][column].setText (QString::number (m_container[row][column].text ().toInt () * 2));
                 updateScore (m_container[row][column].text ().toInt ());
                 m_container[row][column - 1].setText ("");
@@ -141,6 +146,7 @@ void MainWindow::moveRight()
     for (int row = 0; row < size; row ++){
         for (int column = size - 1; column > 0; column -- ){
             if(m_container[row][column].text().isEmpty () && !m_container[row][column - 1].text ().isEmpty ()) {
+                m_container[row][column].animate(Cell2048::Direction::Right);
                 m_container[row][column].setText (m_container[row][column - 1].text ());
                 m_container[row][column - 1].setText ("");
                 row = 0;
@@ -162,6 +168,7 @@ void MainWindow::moveUp()
     for (int column = 0; column < size; column ++) {
         for( int row = 0; row < size - 1; row ++) {
             if(m_container[row] [column].text ().isEmpty () && !m_container[row+1][column].text ().isEmpty ()) {
+                m_container[row][column].animate(Cell2048::Direction::Up);
                 m_container[row] [column].setText (m_container[row+1][column].text ());
                 m_container[row+1][column].setText ("");
 
@@ -174,7 +181,7 @@ void MainWindow::moveUp()
     for (int column = 0; column < size; column ++) {
         for( int row = 0; row < size - 1; row ++) {
             if(m_container[row] [column].text () == m_container[row+1][column].text () && !m_container[row][column].text ().isEmpty ()) {
-                animateCell(row, column, UP);
+                m_container[row][column].animate(Cell2048::Direction::Up);
                 m_container[row] [column].setText (QString::number (m_container[row][column].text ().toInt () * 2));
                 updateScore (m_container[row][column].text ().toInt ());
                 m_container[row+1][column].setText ("");
@@ -187,6 +194,7 @@ void MainWindow::moveUp()
     for (int column = 0; column < size; column ++) {
         for( int row = 0; row < size - 1; row ++) {
             if(m_container[row] [column].text ().isEmpty () && !m_container[row+1][column].text ().isEmpty ()) {
+                m_container[row][column].animate(Cell2048::Direction::Up);
                 m_container[row] [column].setText (m_container[row+1][column].text ());
                 m_container[row+1][column].setText ("");
 
@@ -207,6 +215,7 @@ void MainWindow::moveDown()
     for (int column = 0; column < size; column ++) {
         for( int row = size -1 ; row > 0; row --) {
             if(m_container[row] [column].text ().isEmpty () && !m_container[row - 1][column].text ().isEmpty ()) {
+                m_container[row][column].animate(Cell2048::Direction::Down);
                 m_container[row] [column].setText (m_container[row - 1][column].text ());
                 m_container[row - 1][column].setText ("");
 
@@ -219,7 +228,7 @@ void MainWindow::moveDown()
     for (int column = 0; column < size; column ++) {
         for( int row = size - 1; row > 0 ; row --) {
             if(m_container[row] [column].text () == m_container[row - 1][column].text () && !m_container[row][column].text ().isEmpty ()) {
-                animateCell(row, column, DOWN);
+                m_container[row][column].animate(Cell2048::Direction::Down);
                 m_container[row] [column].setText (QString::number (m_container[row][column].text ().toInt () * 2));
                 updateScore (m_container[row][column].text ().toInt ());
                 m_container[row - 1][column].setText ("");
@@ -233,6 +242,7 @@ void MainWindow::moveDown()
     for (int column = 0; column < size; column ++) {
         for( int row = size - 1 ; row > 0; row --) {
             if(m_container[row] [column].text ().isEmpty () && !m_container[row - 1][column].text ().isEmpty ()) {
+                m_container[row][column].animate(Cell2048::Direction::Down);
                 m_container[row] [column].setText (m_container[row - 1][column].text ());
                 m_container[row - 1][column].setText ("");
 
@@ -335,30 +345,6 @@ void MainWindow::updateBestScoreIsNeeded(int value)
     } else settings->setValue ("bestScore", value);
 }
 
-void MainWindow::animateCell(int row, int column, MainWindow::Direction direction)
-{
-    if(m_container[row][column].isAnimatedAvaliable()) {
-        QPropertyAnimation *animation = new QPropertyAnimation(&m_container[row][column], "geometry", &m_container[row][column]);
-        animation->setDuration(animationDuration);
-        switch (direction) {
-        case Direction::LEFT:
-            animation->setStartValue(m_container[row][column].geometry().adjusted(100, 0, 100, 0));
-            break;
-        case Direction::RIGHT:
-            animation->setStartValue(m_container[row][column].geometry().adjusted(-100, 0, 100, 0));
-            break;
-        case Direction::UP:
-            animation->setStartValue(m_container[row][column].geometry().adjusted(0, 100, 0, 100));
-            break;
-        case Direction::DOWN:
-            animation->setStartValue(m_container[row][column].geometry().adjusted(0, -100, 0, -100));
-            break;
-        }
-        animation->setEndValue(m_container[row][column].geometry());
-        animation->start(QAbstractAnimation::DeleteWhenStopped);
-        m_container[row][column].startAnimated(animationDuration);
-    }
-}
 
 void MainWindow::initiateGame()
 {
@@ -372,6 +358,7 @@ void MainWindow::initiateGame()
     for (int i = 0; i < size; i ++) {
         for( int j = 0; j < size; j++) {
             ui->gridLayout->addWidget (&m_container[i][j], i+1 , j);
+
             if( m_container[i][j].paintType() != type) m_container[i][j].changePaintType();
         }
     }
@@ -396,33 +383,23 @@ void MainWindow::generateRandom()
         for (int i = 0; i < size ; i++)
             for (int j=0; j< size;j++) {
                 if(emptyCells[index] == &m_container[i][j]) {
-                    if(m_container[i][j].isAnimatedAvaliable()) {
-                        QPropertyAnimation *animation = new QPropertyAnimation(emptyCells[index], "geometry", emptyCells[index]);
-                        animation->setDuration(animationDuration);
-
-                        if (i < size/2 && j < size/2) {
-                            animation->setStartValue(emptyCells[index]->geometry().adjusted(-200, -200, -200, -200));
-                        } else if (i < size/2 && j > size/2){
-                            animation->setStartValue(emptyCells[index]->geometry().adjusted(200, -200, 200, -200));
-                        } else if (i >= size/2 && j < size/2) {
-                            animation->setStartValue(emptyCells[index]->geometry().adjusted(-200, 200, -200, 200));
-                        } else {
-                            animation->setStartValue(emptyCells[index]->geometry().adjusted(200, 200, 200, 200));
-                        }
-
-                        animation->setEndValue(emptyCells[index]->geometry());
-                        animation->setEasingCurve(QEasingCurve::Type::InOutQuad);
-                        animation->start(QAbstractAnimation::DeleteWhenStopped);
-                        m_container[i][j].startAnimated(animationDuration);
-                    }
-                    break;
-                }
+                   if( i < size/2 && j < size/2) {
+                        m_container[i][j].animate(Cell2048::Direction::LeftNorth);
+                   } else if( i < size/2 && j > size/2) {
+                        m_container[i][j].animate(Cell2048::Direction::RightHorth);
+                   } else if (i >= size/2 && j < size/2) {
+                        m_container[i][j].animate(Cell2048::Direction::LeftSouth);
+                   } else {
+                       m_container[i][j].animate(Cell2048::Direction::RightSouth);
+                   }
+                   break;
             }
+        }
     }
+
     count ++;
 
     emptyCells[index]->setText (index % 10 ? "2" : "4");
-
 }
 
 void MainWindow::on_action4x4_triggered()

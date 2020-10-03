@@ -1,23 +1,51 @@
 #include "cell2048.h"
 
-Cell2048::Cell2048(QWidget *parent) : QWidget(parent), m_text (""), paintDigits(true), isAnimated(true)
+Cell2048::Cell2048(QWidget *parent) : QWidget(parent), m_text (""), paintDigits(true), isAnimated(false)
 {
     auto m_font = this->font ();
     m_font.setPointSize (m_font.pointSize () * 2);
     this->setFont (m_font);
 }
 
-void Cell2048::startAnimated(int mcsec)
+void Cell2048::animate(Direction direction)
 {
-    isAnimated  = false;
-    QTimer *timer = new QTimer(this);
-    timer->start(mcsec * 3);
-    QObject::connect( timer, &QTimer::timeout, [=] () {
+    if(!isAnimated) {
         isAnimated = true;
-        timer->stop();
-        delete timer;
-    });
+        QPropertyAnimation *animation = new QPropertyAnimation(this, "geometry", this);
+        animation->setDuration(animationDuration);
+        switch (direction) {
+        case Direction::Left:
+            animation->setStartValue(this->geometry().adjusted(100, 0, 100, 0));
+            break;
+        case Direction::Right:
+            animation->setStartValue(this->geometry().adjusted(-100, 0, 100, 0));
+            break;
+        case Direction::Up:
+            animation->setStartValue(this->geometry().adjusted(0, 100, 0, 100));
+            break;
+        case Direction::Down:
+            animation->setStartValue(this->geometry().adjusted(0, -100, 0, -100));
+            break;
+        case Direction::LeftNorth:
+            animation->setStartValue(this->geometry().adjusted(-200, -200, -200, -200));
+            break;
+        case Direction::RightHorth:
+            animation->setStartValue(this->geometry().adjusted(200, -200, 200, -200));
+            break;
+        case Direction::LeftSouth:
+            animation->setStartValue(this->geometry().adjusted(-200, 200, -200, 200));
+            break;
+        case Direction::RightSouth:
+            animation->setStartValue(this->geometry().adjusted(200, 200, 200, 200));
+            break;
+        }
+        animation->setEndValue(this->geometry());
+        animation->start(QAbstractAnimation::DeleteWhenStopped);
+
+        QObject::connect(animation, &QAbstractAnimation::finished, [=] () {isAnimated = false;});
+    }
 }
+
 
 void Cell2048::paintEvent(QPaintEvent */*event*/)
 {

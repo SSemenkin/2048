@@ -11,6 +11,7 @@
 #include "cell2048.h"
 #include "scorelogo.h"
 #include "newgamebutton.h"
+#include "undobutton.h"
 
 
 QT_BEGIN_NAMESPACE
@@ -26,9 +27,6 @@ public:
     ~MainWindow();
 
 protected:
-    enum Direction {
-        LEFT,RIGHT,DOWN,UP
-    };
 
     void keyPressEvent(QKeyEvent *event) override;
 
@@ -44,7 +42,6 @@ private Q_SLOTS:
     void generateRandom();
     void checkForGameOver();
     void updateBestScoreIsNeeded (int value);
-    void animateCell (int row, int column, Direction);
     void on_action4x4_triggered();
     void on_action5x5_triggered();
     void on_action6x6_triggered();
@@ -63,6 +60,7 @@ private:
 
     ScoreLogo *bestScore, *currentScore;
     NewGameButton *button;
+    UndoButton *undoButton;
     QSettings *settings;
 
 

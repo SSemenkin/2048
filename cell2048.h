@@ -6,11 +6,16 @@
 #include <QPixmap>
 #include <QTimer>
 #include <QMap>
+#include <QPropertyAnimation>
+
 
 class Cell2048 : public QWidget
 {
     Q_OBJECT
 public:
+    enum Direction {
+        Left, Right, Up, Down, LeftNorth, RightHorth, LeftSouth, RightSouth
+    };
 
     explicit Cell2048(QWidget *parent = nullptr);
     QString text () const { return m_text; }
@@ -20,9 +25,8 @@ public:
         paintDigits  = !paintDigits;
         update();
     };
-    void startAnimated(int mcsec) ;
+    void animate(Direction direction) ;
     bool isAnimatedAvaliable() const { return isAnimated;}
-
 
 
 
@@ -41,6 +45,9 @@ private:
     QString m_text;
     bool paintDigits;
     bool isAnimated;
+
+    const int animationDuration = 100;
+
 
 };
 
