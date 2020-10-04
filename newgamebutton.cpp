@@ -24,7 +24,7 @@ void NewGameButton::paintEvent(QPaintEvent *)
 void NewGameButton::mouseReleaseEvent(QMouseEvent *event)
 {
     if(event->button () == Qt::MouseButton::LeftButton
-            && event->pos().rx() >= 0 && event->pos().rx() < width() && event->pos().ry() >= 0 && event->pos().ry() < this->height()) {
+            && event->pos().rx() >= 0 && event->pos().rx() < width() && event->pos().ry() >= this->height()/2 - this->height()/4 && event->pos().ry() < this->height()/2 + this->height()/4) {
         if(QMessageBox :: question ( this, "", "Start new game?") == QMessageBox::StandardButton::Yes) {
             emit initiateNewGame ();
         }

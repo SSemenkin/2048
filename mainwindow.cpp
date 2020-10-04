@@ -11,16 +11,23 @@ MainWindow::MainWindow(QWidget *parent)
     this->setWindowTitle (qApp->applicationName ());
     srand(time(NULL));
 
-    ui->gridLayout->addWidget (undoButton, 0, 0);
-    ui->gridLayout->addWidget (currentScore, 0, 1);
-    ui->gridLayout->addWidget (bestScore, 0, 2);
-    ui->gridLayout->addWidget (button, 0, 3);
+
     initiateGame ();
 
     QObject::connect (button, &NewGameButton::initiateNewGame, [=](){
         this->restartGame ();
     });
     QObject::connect (ui->action_4, &QAction::triggered, qApp, &QCoreApplication::quit);
+
+    QObject::connect(undoButton, &UndoButton::undo, this, &MainWindow::undo);
+    QObject::connect(undoButton, &UndoButton::undo, currentScore, &ScoreLogo::undo);
+    QObject::connect(undoButton, &UndoButton::undo, bestScore, &ScoreLogo::undo);
+
+
+    ui->horizontalLayout->addWidget (undoButton);
+    ui->horizontalLayout->addWidget (currentScore);
+    ui->horizontalLayout->addWidget (bestScore);
+    ui->horizontalLayout->addWidget (button);
 }
 
 MainWindow::~MainWindow()
@@ -38,30 +45,43 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
         switch (event->key ()) {
         case Qt::Key_A:
         case Qt::Key_Left :
+            saveValuesForUndo();
             moveLeft ();
             checkForGameOver ();
             break;
 
         case Qt::Key_D:
         case Qt::Key_Right :
+            saveValuesForUndo();
             moveRight ();
             checkForGameOver ();
             break;
 
         case Qt::Key_W:
         case Qt::Key_Up:
+            saveValuesForUndo();
             moveUp ();
             checkForGameOver ();
             break;
 
         case Qt::Key_S:
         case Qt::Key_Down:
+            saveValuesForUndo();
             moveDown ();
             checkForGameOver ();
             break;
         }
 
-    QMainWindow::keyPressEvent(event);
+        QMainWindow::keyPressEvent(event);
+}
+
+void MainWindow::resizeEvent(QResizeEvent *event)
+{
+    undoButton->setFixedHeight(this->height()/size + 3);
+    currentScore->setFixedHeight(this->height()/size + 3);
+    bestScore->setFixedHeight(this->height()/size + 3);
+    button->setFixedHeight(this->height()/size + 3);
+    QMainWindow::resizeEvent(event);
 }
 
 void MainWindow::moveLeft()
@@ -336,6 +356,34 @@ void MainWindow::checkForGameOver()
 
 }
 
+void MainWindow::saveValuesForUndo()
+{
+    QVector<QVector<int>> data;
+    for (int i = 0; i < size; ++i) {
+        QVector <int> row;
+        for (int j = 0; j < size; ++j) {
+            row << m_container[i][j].text().toInt();
+        }
+        data << row;
+    }
+    undoButton->setMatrix(data);
+}
+
+void MainWindow::undo(const QVector<QVector<int> > data)
+{
+    if(count > 2 ) {
+      Q_ASSERT(data.size() == size);
+        for (int i = 0; i < size; i ++) {
+            for (int j = 0; j < size; j++) {
+                data[i][j] ?
+                    m_container[i][j].setText(QString::number(data[i][j])) :
+                    m_container[i][j].setText("");
+
+            }
+        }
+    }
+}
+
 void MainWindow::updateBestScoreIsNeeded(int value)
 {
     if(settings->contains ("bestScore")) {
@@ -345,7 +393,6 @@ void MainWindow::updateBestScoreIsNeeded(int value)
     } else settings->setValue ("bestScore", value);
 }
 
-
 void MainWindow::initiateGame()
 {
     m_container = new Cell2048* [size];
@@ -353,6 +400,8 @@ void MainWindow::initiateGame()
     for (int i = 0; i < size; i++) {
         m_container[i] = new Cell2048[size];
     }
+
+
 
 
     for (int i = 0; i < size; i ++) {

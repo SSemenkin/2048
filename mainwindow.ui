@@ -14,13 +14,16 @@
    <string>MainWindow</string>
   </property>
   <property name="windowIcon">
-   <iconset>
+   <iconset resource="res.qrc">
     <normaloff>:/icons/main.ico</normaloff>:/icons/main.ico</iconset>
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout_2">
-    <item row="0" column="0">
+    <item row="1" column="0">
      <layout class="QGridLayout" name="gridLayout"/>
+    </item>
+    <item row="0" column="0">
+     <layout class="QHBoxLayout" name="horizontalLayout"/>
     </item>
    </layout>
   </widget>
@@ -30,7 +33,7 @@
      <x>0</x>
      <y>0</y>
      <width>530</width>
-     <height>20</height>
+     <height>25</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuGame">
@@ -112,6 +115,8 @@
    </property>
   </action>
  </widget>
- <resources/>
+ <resources>
+  <include location="res.qrc"/>
+ </resources>
  <connections/>
 </ui>

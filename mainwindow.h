@@ -29,6 +29,7 @@ public:
 protected:
 
     void keyPressEvent(QKeyEvent *event) override;
+    void resizeEvent(QResizeEvent *event) override;
 
 private Q_SLOTS:
     void moveLeft ();
@@ -41,12 +42,15 @@ private Q_SLOTS:
     void initiateGame();
     void generateRandom();
     void checkForGameOver();
+    void saveValuesForUndo();
+    void undo(const QVector<QVector<int>>);
     void updateBestScoreIsNeeded (int value);
     void on_action4x4_triggered();
     void on_action5x5_triggered();
     void on_action6x6_triggered();
     void on_action7x7_triggered();
     void on_action8x8_triggered();
+
 
     void on_actionChange_cell_Type_triggered();
 

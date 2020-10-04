@@ -16,5 +16,6 @@
         <file>icons/archer.jpg</file>
         <file>icons/andrew.jpg</file>
         <file>icons/main.ico</file>
+        <file>icons/back.png</file>
     </qresource>
 </RCC>
