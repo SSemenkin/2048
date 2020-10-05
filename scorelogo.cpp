@@ -7,8 +7,6 @@ ScoreLogo::ScoreLogo(QString title,QWidget *parent) : QWidget(parent), m_title (
 
 void ScoreLogo::setValue(int value)
 {
-    counterValues ++;
-    isUndo = false;
     DigitalAnimation *animation;
     if (value == 0 && m_value > 0) {
         animation = new DigitalAnimation((0 - m_value),this);
@@ -19,20 +17,11 @@ void ScoreLogo::setValue(int value)
     animation->setGeometry (this->rect ().adjusted (0, -this->rect ().height (), 0, -this->rect ().height ()));
 
     animation->show();
-    lastAdded = value - m_value;
     m_value = value;
     update ();
     animation->start();
 }
 
-void ScoreLogo::undo()
-{
-    if(counterValues > 1 && !isUndo) {
-            m_value -= lastAdded;
-            isUndo = true;
-            update();
-    }
-}
 
 void ScoreLogo::paintEvent(QPaintEvent */*event*/)
 {

@@ -20,8 +20,6 @@ MainWindow::MainWindow(QWidget *parent)
     QObject::connect (ui->action_4, &QAction::triggered, qApp, &QCoreApplication::quit);
 
     QObject::connect(undoButton, &UndoButton::undo, this, &MainWindow::undo);
-    QObject::connect(undoButton, &UndoButton::undo, currentScore, &ScoreLogo::undo);
-    QObject::connect(undoButton, &UndoButton::undo, bestScore, &ScoreLogo::undo);
 
 
     ui->horizontalLayout->addWidget (undoButton);
