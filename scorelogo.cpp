@@ -1,6 +1,6 @@
 #include "scorelogo.h"
 
-ScoreLogo::ScoreLogo(QString title,QWidget *parent) : QWidget(parent), m_title (title), m_value(0), counterValues(0),isUndo(false)
+ScoreLogo::ScoreLogo(QString title,QWidget *parent) : QWidget(parent), m_title (title), m_value(0)
 {
 
 }

@@ -37,12 +37,13 @@ private Q_SLOTS:
     void moveUp();
     void moveDown();
     void updateScore(int value);
+    void updateUndoScore(int value);
     void restartGame(int size = 4);
     bool isGameOver();
     void initiateGame();
     void generateRandom();
     void checkForGameOver();
-    void saveValuesForUndo();
+    void saveValuesForUndo(QVector<QVector<int>>);
     void undo(const QVector<QVector<int>>);
     void updateBestScoreIsNeeded (int value);
     void on_action4x4_triggered();

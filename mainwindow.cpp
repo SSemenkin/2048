@@ -43,28 +43,24 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
         switch (event->key ()) {
         case Qt::Key_A:
         case Qt::Key_Left :
-            saveValuesForUndo();
             moveLeft ();
             checkForGameOver ();
             break;
 
         case Qt::Key_D:
         case Qt::Key_Right :
-            saveValuesForUndo();
             moveRight ();
             checkForGameOver ();
             break;
 
         case Qt::Key_W:
         case Qt::Key_Up:
-            saveValuesForUndo();
             moveUp ();
             checkForGameOver ();
             break;
 
         case Qt::Key_S:
         case Qt::Key_Down:
-            saveValuesForUndo();
             moveDown ();
             checkForGameOver ();
             break;
@@ -84,6 +80,15 @@ void MainWindow::resizeEvent(QResizeEvent *event)
 
 void MainWindow::moveLeft()
 {
+    QVector<QVector<int>> matrix;
+    for (int i = 0; i < size; i++) {
+        QVector<int> row;
+        for (int j = 0; j < size; j++) {
+            row <<  m_container[i][j].text().toInt();
+        }
+        matrix << row;
+    }
+
     bool isRandomValueNeededToGenerate = false;
     // смещаем пока всё влево
     // заменяя пустоты на цифры справа
@@ -127,11 +132,24 @@ void MainWindow::moveLeft()
     }
 
 
-    if(isRandomValueNeededToGenerate) generateRandom ();
+    if(isRandomValueNeededToGenerate) {
+        saveValuesForUndo(matrix);
+        generateRandom ();
+    }
 }
 
 void MainWindow::moveRight()
 {
+
+    QVector<QVector<int>> matrix;
+    for (int i = 0; i < size; i++) {
+        QVector<int> row;
+        for (int j = 0; j < size; j++) {
+            row <<  m_container[i][j].text().toInt();
+        }
+        matrix << row;
+    }
+
     bool isRandomValueNeededToGenerate = false;
     // смещаем пока всё вправо
     // заменяя пустоты на цифры слева
@@ -175,11 +193,24 @@ void MainWindow::moveRight()
     }
 
 
-    if(isRandomValueNeededToGenerate) generateRandom ();
+    if(isRandomValueNeededToGenerate) {
+        saveValuesForUndo(matrix);
+        generateRandom ();
+    }
 }
 
 void MainWindow::moveUp()
 {
+
+    QVector<QVector<int>> matrix;
+    for (int i = 0; i < size; i++) {
+        QVector<int> row;
+        for (int j = 0; j < size; j++) {
+            row <<  m_container[i][j].text().toInt();
+        }
+        matrix << row;
+    }
+
     bool isRandomValueNeededToGenerate = false;
     // смещаем пока всё влево
     // заменяя пустоты на цифры справа
@@ -222,11 +253,23 @@ void MainWindow::moveUp()
         }
     }
 
-    if(isRandomValueNeededToGenerate) generateRandom ();
+    if(isRandomValueNeededToGenerate) {
+        saveValuesForUndo(matrix);
+        generateRandom ();
+    }
 }
 
 void MainWindow::moveDown()
 {
+    QVector<QVector<int>> matrix;
+    for (int i = 0; i < size; i++) {
+        QVector<int> row;
+        for (int j = 0; j < size; j++) {
+            row <<  m_container[i][j].text().toInt();
+        }
+        matrix << row;
+    }
+
     bool isRandomValueNeededToGenerate = false;
     // смещаем пока всё влево
     // заменяя пустоты на цифры справа
@@ -270,7 +313,10 @@ void MainWindow::moveDown()
         }
     }
 
-    if(isRandomValueNeededToGenerate) generateRandom ();
+    if(isRandomValueNeededToGenerate) {
+        saveValuesForUndo(matrix);
+        generateRandom ();
+    }
 }
 
 void MainWindow::updateScore(int value)
@@ -279,6 +325,12 @@ void MainWindow::updateScore(int value)
     currentScore->setValue (newValue);
 
     if(bestScore->value () < newValue) bestScore->setValue (newValue);
+}
+
+void MainWindow::updateUndoScore(int value)
+{
+    currentScore->setValue(value);
+    if(bestScore->value() < value) bestScore->setValue(value);
 }
 
 void MainWindow::restartGame( int size)
@@ -354,32 +406,29 @@ void MainWindow::checkForGameOver()
 
 }
 
-void MainWindow::saveValuesForUndo()
+void MainWindow::saveValuesForUndo(QVector<QVector<int>> data)
 {
-    QVector<QVector<int>> data;
-    for (int i = 0; i < size; ++i) {
-        QVector <int> row;
-        for (int j = 0; j < size; ++j) {
-            row << m_container[i][j].text().toInt();
-        }
-        data << row;
-    }
     undoButton->setMatrix(data);
 }
 
 void MainWindow::undo(const QVector<QVector<int> > data)
 {
     if(count > 2 ) {
-      Q_ASSERT(data.size() == size);
+        Q_ASSERT(data.size() == size);
+        int sum = 0;
         for (int i = 0; i < size; i ++) {
             for (int j = 0; j < size; j++) {
                 data[i][j] ?
                     m_container[i][j].setText(QString::number(data[i][j])) :
                     m_container[i][j].setText("");
-
+                if(data[i][j] > 2 )
+                    sum += data[i][j];
             }
         }
+        updateUndoScore(sum);
+        updateBestScoreIsNeeded(sum);
     }
+
 }
 
 void MainWindow::updateBestScoreIsNeeded(int value)
